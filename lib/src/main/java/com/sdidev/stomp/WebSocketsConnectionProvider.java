@@ -1,4 +1,4 @@
-package ua.naiksoftware.stomp;
+package com.sdidev.stomp;
 
 import android.util.Log;
 
@@ -20,9 +20,6 @@ import java.util.TreeMap;
 import rx.Observable;
 import rx.Subscriber;
 
-/**
- * Created by naik on 05.05.16.
- */
 public class WebSocketsConnectionProvider implements ConnectionProvider {
 
     private static final String TAG = WebSocketsConnectionProvider.class.getSimpleName();
@@ -37,6 +34,7 @@ public class WebSocketsConnectionProvider implements ConnectionProvider {
 
     /**
      * Support UIR scheme ws://host:port/path
+     *
      * @param connectHttpHeaders may be null
      */
     public WebSocketsConnectionProvider(String uri, Map<String, String> connectHttpHeaders) {
@@ -61,6 +59,30 @@ public class WebSocketsConnectionProvider implements ConnectionProvider {
 
         createWebSocketConnection();
         return observable;
+    }
+
+    @Override
+    public Observable<Void> send(String stompMessage) {
+        return Observable.create(subscriber -> {
+            if (mWebSocketClient == null) {
+                subscriber.onError(new IllegalStateException("Not connected yet"));
+            } else {
+                mWebSocketClient.send(stompMessage);
+                subscriber.onCompleted();
+            }
+        });
+    }
+
+    @Override
+    public Observable<LifecycleEvent> getLifecycleReceiver() {
+        return Observable.<LifecycleEvent>create(subscriber -> {
+            mLifecycleSubscribers.add(subscriber);
+
+        }).doOnUnsubscribe(() -> {
+            for (Subscriber<? super LifecycleEvent> subscriber : mLifecycleSubscribers) {
+                if (subscriber.isUnsubscribed()) mLifecycleSubscribers.remove(subscriber);
+            }
+        });
     }
 
     private void createWebSocketConnection() {
@@ -111,18 +133,6 @@ public class WebSocketsConnectionProvider implements ConnectionProvider {
         haveConnection = true;
     }
 
-    @Override
-    public Observable<Void> send(String stompMessage) {
-        return Observable.create(subscriber -> {
-            if (mWebSocketClient == null) {
-                subscriber.onError(new IllegalStateException("Not connected yet"));
-            } else {
-                mWebSocketClient.send(stompMessage);
-                subscriber.onCompleted();
-            }
-        });
-    }
-
     private void emitLifecycleEvent(LifecycleEvent lifecycleEvent) {
         Log.d(TAG, "Emit lifecycle event: " + lifecycleEvent.getType().name());
         for (Subscriber<? super LifecycleEvent> subscriber : mLifecycleSubscribers) {
@@ -135,17 +145,5 @@ public class WebSocketsConnectionProvider implements ConnectionProvider {
         for (Subscriber<? super String> subscriber : mMessagesSubscribers) {
             subscriber.onNext(stompMessage);
         }
-    }
-
-    @Override
-    public Observable<LifecycleEvent> getLifecycleReceiver() {
-        return Observable.<LifecycleEvent>create(subscriber -> {
-            mLifecycleSubscribers.add(subscriber);
-
-        }).doOnUnsubscribe(() -> {
-            for (Subscriber<? super LifecycleEvent> subscriber : mLifecycleSubscribers) {
-                if (subscriber.isUnsubscribed()) mLifecycleSubscribers.remove(subscriber);
-            }
-        });
     }
 }

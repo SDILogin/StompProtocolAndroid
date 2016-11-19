@@ -1,10 +1,7 @@
-package ua.naiksoftware.stomp;
+package com.sdidev.stomp;
 
 import rx.Observable;
 
-/**
- * Created by naik on 05.05.16.
- */
 public interface ConnectionProvider {
 
     /**

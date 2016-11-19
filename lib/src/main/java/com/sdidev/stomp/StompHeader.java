@@ -1,8 +1,5 @@
-package ua.naiksoftware.stomp;
+package com.sdidev.stomp;
 
-/**
- * Created by naik on 05.05.16.
- */
 public class StompHeader {
 
     public static final String VERSION = "version";

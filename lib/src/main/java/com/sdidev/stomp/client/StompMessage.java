@@ -1,6 +1,6 @@
-package ua.naiksoftware.stomp.client;
+package com.sdidev.stomp.client;
 
-import android.text.TextUtils;
+import com.sdidev.stomp.StompHeader;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -9,11 +9,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ua.naiksoftware.stomp.StompHeader;
-
-/**
- * Created by naik on 05.05.16.
- */
 public class StompMessage {
 
     public static final String TERMINATE_MESSAGE_SYMBOL = "\u0000";

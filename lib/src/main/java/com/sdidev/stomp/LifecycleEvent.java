@@ -1,11 +1,8 @@
-package ua.naiksoftware.stomp;
+package com.sdidev.stomp;
 
 
 import java.util.TreeMap;
 
-/**
- * Created by naik on 05.05.16.
- */
 public class LifecycleEvent {
 
     public enum Type {

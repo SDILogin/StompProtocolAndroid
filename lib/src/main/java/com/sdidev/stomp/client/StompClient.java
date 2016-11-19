@@ -1,6 +1,10 @@
-package ua.naiksoftware.stomp.client;
+package com.sdidev.stomp.client;
 
 import android.util.Log;
+
+import com.sdidev.stomp.ConnectionProvider;
+import com.sdidev.stomp.LifecycleEvent;
+import com.sdidev.stomp.StompHeader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,13 +20,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.observables.ConnectableObservable;
-import ua.naiksoftware.stomp.ConnectionProvider;
-import ua.naiksoftware.stomp.LifecycleEvent;
-import ua.naiksoftware.stomp.StompHeader;
 
-/**
- * Created by naik on 05.05.16.
- */
 public class StompClient {
 
     private static final String TAG = StompClient.class.getSimpleName();

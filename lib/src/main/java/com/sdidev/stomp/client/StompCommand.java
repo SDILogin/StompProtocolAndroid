@@ -1,8 +1,5 @@
-package ua.naiksoftware.stomp.client;
+package com.sdidev.stomp.client;
 
-/**
- * Created by naik on 05.05.16.
- */
 public class StompCommand {
 
     public static final String CONNECT = "CONNECT";
