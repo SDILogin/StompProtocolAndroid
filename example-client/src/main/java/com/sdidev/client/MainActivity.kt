@@ -56,10 +56,29 @@ class MainActivity() : AppCompatActivity() {
 
         override fun onNext(t: LifecycleEvent?) {
             when (t?.type) {
-                LifecycleEvent.Type.OPENED -> connectionLogTextView.text = "${connectionLogTextView.text}\nopened"
-                LifecycleEvent.Type.ERROR -> connectionLogTextView.text = "${connectionLogTextView.text}\nerror\n${t?.exception?.message}\n"
-                LifecycleEvent.Type.CLOSED -> connectionLogTextView.text = "${connectionLogTextView.text}\nclosed"
-                else -> connectionLogTextView.text = "${connectionLogTextView.text}\n${t?.message}"
+                LifecycleEvent.Type.OPENED -> {
+                    runOnUiThread {
+                        connectionLogTextView.text = "${connectionLogTextView.text}\nopened"
+                    }
+                }
+
+                LifecycleEvent.Type.ERROR -> {
+                    runOnUiThread {
+                        connectionLogTextView.text = "${connectionLogTextView.text}\nerror\n${t?.exception?.message}\n"
+                    }
+                }
+
+                LifecycleEvent.Type.CLOSED -> {
+                    runOnUiThread {
+                        connectionLogTextView.text = "${connectionLogTextView.text}\nclosed"
+                    }
+                }
+
+                else -> {
+                    runOnUiThread {
+                        connectionLogTextView.text = "${connectionLogTextView.text}\n${t?.message}"
+                    }
+                }
             }
         }
 
